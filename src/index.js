@@ -1,21 +1,25 @@
 import dotenv from "dotenv";
-import express from "express";
 dotenv.config();
-import roteadorUsuario from "./routes/usuario.js";
 
-const app = express();
-const port = 3000;
+import express from "express";
+import roteadorUsuario from "./routes/usuario.js";
+import loginRouter from "./routes/login.js";
+
+const app = express();              
+const port = 3000;         
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(roteadorUsuario);
+app.use(loginRouter);
 
-app.get("/", (req, res) => {
-  res.json({
-    message: "API para CRUD usuario: link_gitgub",
-  });
+app.get("/", (req, res) => {        
+    res.json({
+        message: "API para CRUD usuario: https://github.com/layza-0/introdu-ao-1.git",     
+    });
+    console.log("Rota / solicitada");
 });
 
 app.listen(port, () => {
-  // Um socket para "escutar" as requisições
-  console.log(`Serviço escutando na porta:  ${port}`);
+    console.log(`Serviço escutando na porta:  ${port}`);
 });
