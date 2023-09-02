@@ -1,8 +1,6 @@
 //src/routes/usuario.js
 import { Router } from "express";
-
-const router = Router();
-
+import verificarAutenticacao from "../middlewares/autenticacao.js";
 import {
   selectUsuario,
   selectUsuarios,
@@ -11,8 +9,9 @@ import {
   updateUsuario,
 } from "../db/index.js";
 
+const router = Router();
 
-router.get("/usuario", async (req, res) => {
+router.get("/usuario", verificarAutenticacao, async (req, res) => {
   console.log("Rota GET /usuario solicitada");
   try {
     const usuarios = await selectUsuarios();
@@ -22,7 +21,7 @@ router.get("/usuario", async (req, res) => {
   }
 });
 
-router.get("/usuario/:id", async (req, res) => {
+router.get("/usuario/:id",  async (req, res) => {
   console.log(`Rota GET /usuario/${req.params.id} solicitada`);
   try {
     const usuario = await selectUsuario(req.params.id);
@@ -33,7 +32,7 @@ router.get("/usuario/:id", async (req, res) => {
   }
 });
 
-router.post("/usuario", async (req, res) => {
+router.post("/usuario", verificarAutenticacao, async (req, res) => {
   console.log("Rota POST /usuario solicitada");
   try {
     await insertUsuario(req.body);
@@ -43,7 +42,7 @@ router.post("/usuario", async (req, res) => {
   }
 });
 
-router.put("/usuario", async (req, res) => {
+router.put("/usuario",verificarAutenticacao,  async (req, res) => {
   console.log("Rota PUT /usuario solicitada");
   try {
     const usuario = await selectUsuario(req.body.id);
@@ -57,7 +56,7 @@ router.put("/usuario", async (req, res) => {
   }
 });
 
-router.delete("/usuario/:id", async (req, res) => {
+router.delete("/usuario/:id", verificarAutenticacao, async (req, res) => {
   console.log("Rota DELETE /usuario solicitada");
   try {
     await deleteUsuario(req.params.id);
